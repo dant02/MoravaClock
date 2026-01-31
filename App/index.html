@@ -1,55 +1,70 @@
 <!--
-Copyright (c) 2024 LG Electronics Inc.
-
-SPDX-License-Identifier: Apache-2.0
+Copyright (c) 2026 dant02.
 -->
 
 <!DOCTYPE html>
 <html>
 
 <head>
-	<title>new app</title>
+	<title>MoravaClock</title>
 	<style type="text/css">
 		body {
-			width: 100%;
-			height: 100%;
-			background-color: #202020;
+			align-content: center;
+			background-color: white;
+			display: grid;
+			font-size: 12vw;
+			height: 100vh;
+			justify-content: center;
+			margin: 0;
+			width: 100vw;
 		}
 
-		div {
-			position: absolute;
-			height: 100%;
-			width: 100%;
-			display: table;
+		#txt {
+			font-size: 24vw;
 		}
-
-		h1 {
-			display: table-cell;
-			vertical-align: middle;
-			text-align: center;
-			color: #FFFFFF;
-		}
-
 	</style>
 </head>
 
-<script src="webOSTVjs-1.2.10/webOSTV.js" charset="utf-8"></script>
-<script src="webOSTVjs-1.2.10/webOSTV-dev.js" charset="utf-8"></script>
-
-
 <body>
 	<div>
-		<h1 id="txt">Hello, World!</h1>
+		<span id="txt">00:00:00</span>.<span id="milliseconds">0</span>
 	</div>
 
+	<script src="webOSTVjs-1.2.10/webOSTV.js" charset="utf-8"></script>
+	<script src="webOSTVjs-1.2.10/webOSTV-dev.js" charset="utf-8"></script>
 	<script type="text/javascript">
 		var txt = document.getElementById('txt');
+		var ms = document.getElementById('milliseconds');
 		var timer = setInterval(function(){
-			txt.innerText = 'Test';
 			var date = new Date();
-			txt.innerText = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-		}, 1000)
-</script>
+			var d = date.getMilliseconds();
+			var t = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+			txt.innerText = t;
+			ms.innerText = (d - d % 100) / 100;
+		}, 100)
+
+		document.addEventListener(
+			"keydown",
+			function(event) {
+				var body = document.getElementsByTagName('body')[0];
+				switch(event.keyCode) {
+					case 49: // 1 on remote
+		 				body.style['background-color'] = 'white';
+						body.style['color'] = 'black';
+						break;
+					case 50: // 2 on remote
+						body.style['background-color'] = 'black';
+						body.style['color'] = 'white';
+						break;
+					case 51: // 3 on remote
+						body.style['background-color'] = '#008';
+						body.style['color'] = 'white';
+						break;
+				}
+			},
+			false
+			);
+	</script>
 </body>
 
 </html>
