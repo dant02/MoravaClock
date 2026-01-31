@@ -1,0 +1,10 @@
+{
+  "id": "cz.qecla.moravaclock",
+  "version": "1.0.0",
+  "vendor": "Qecla",
+  "type": "web",
+  "main": "index.html",
+  "title": "MoravaClock",
+  "icon": "icon.png",
+  "largeIcon": "largeIcon.png"
+}
