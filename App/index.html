@@ -6,65 +6,65 @@ Copyright (c) 2026 dant02.
 <html>
 
 <head>
-	<title>MoravaClock</title>
-	<style type="text/css">
-		body {
-			align-content: center;
-			background-color: white;
-			display: grid;
-			font-size: 12vw;
-			height: 100vh;
-			justify-content: center;
-			margin: 0;
-			width: 100vw;
-		}
+  <title>MoravaClock</title>
+  <style type="text/css">
+    body {
+      align-content: center;
+      background-color: white;
+      display: grid;
+      font-size: 12vw;
+      height: 100vh;
+      justify-content: center;
+      margin: 0;
+      width: 100vw;
+    }
 
-		#txt {
-			font-size: 24vw;
-		}
-	</style>
+    #txt {
+      font-size: 24vw;
+    }
+  </style>
 </head>
 
 <body>
-	<div>
-		<span id="txt">00:00:00</span>.<span id="milliseconds">0</span>
-	</div>
+  <div>
+    <span id="txt">00:00:00</span>.<span id="milliseconds">0</span>
+  </div>
 
-	<script src="webOSTVjs-1.2.10/webOSTV.js" charset="utf-8"></script>
-	<script src="webOSTVjs-1.2.10/webOSTV-dev.js" charset="utf-8"></script>
-	<script type="text/javascript">
-		var txt = document.getElementById('txt');
-		var ms = document.getElementById('milliseconds');
-		var timer = setInterval(function(){
-			var date = new Date();
-			var d = date.getMilliseconds();
-			var t = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-			txt.innerText = t;
-			ms.innerText = (d - d % 100) / 100;
-		}, 100)
+  <script src="webOSTVjs-1.2.10/webOSTV.js" charset="utf-8"></script>
+  <script src="webOSTVjs-1.2.10/webOSTV-dev.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    var txt = document.getElementById('txt');
+    var ms = document.getElementById('milliseconds');
+    var timer = setInterval(function(){
+      var date = new Date();
+      var d = date.getMilliseconds();
+      var t = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      txt.innerText = t;
+      ms.innerText = (d - d % 100) / 100;
+    }, 100)
 
-		document.addEventListener(
-			"keydown",
-			function(event) {
-				var body = document.getElementsByTagName('body')[0];
-				switch(event.keyCode) {
-					case 49: // 1 on remote
-		 				body.style['background-color'] = 'white';
-						body.style['color'] = 'black';
-						break;
-					case 50: // 2 on remote
-						body.style['background-color'] = 'black';
-						body.style['color'] = 'white';
-						break;
-					case 51: // 3 on remote
-						body.style['background-color'] = '#008';
-						body.style['color'] = 'white';
-						break;
-				}
-			},
-			false
-			);
-	</script>
+    document.addEventListener(
+      "keydown",
+      function(event) {
+        var body = document.getElementsByTagName('body')[0];
+        switch(event.keyCode) {
+          case 49: // 1 on remote
+            body.style['background-color'] = 'white';
+            body.style['color'] = 'black';
+            break;
+          case 50: // 2 on remote
+            body.style['background-color'] = 'black';
+            body.style['color'] = 'white';
+            break;
+          case 51: // 3 on remote
+            body.style['background-color'] = '#008';
+            body.style['color'] = 'white';
+            break;
+        }
+      },
+      false
+      );
+  </script>
 </body>
 
 </html>

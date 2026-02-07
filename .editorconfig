@@ -1,0 +1,9 @@
+#--
+Copyright (c) 2026 dant02.
+#--
+
+root = true
+
+[*]
+indent_size = 2
+indent_style = space
