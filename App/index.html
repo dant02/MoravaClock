@@ -3,7 +3,7 @@ Copyright (c) 2026 dant02.
 -->
 
 <!DOCTYPE html>
-<html>
+<html lang="cs-CZ">
 
 <head>
   <title>MoravaClock</title>
@@ -19,7 +19,7 @@ Copyright (c) 2026 dant02.
       width: 100vw;
     }
 
-    #txt {
+    #clock {
       font-size: 24vw;
     }
   </style>
@@ -27,21 +27,42 @@ Copyright (c) 2026 dant02.
 
 <body>
   <div>
-    <span id="txt">00:00:00</span>.<span id="milliseconds">0</span>
+    <span id="clock">00:00:00</span>.<span id="milliseconds">0</span>
   </div>
 
   <script src="webOSTVjs-1.2.10/webOSTV.js" charset="utf-8"></script>
   <script src="webOSTVjs-1.2.10/webOSTV-dev.js" charset="utf-8"></script>
+  <script type="text/javascript" id="list"></script>
   <script type="text/javascript">
-    var txt = document.getElementById('txt');
-    var ms = document.getElementById('milliseconds');
-    var timer = setInterval(function(){
+    // https://webos-devrel.github.io/webOS.js/
+    const cl = document.getElementById('clock');
+    const ms = document.getElementById('milliseconds');
+    setInterval(function(){
       var date = new Date();
       var d = date.getMilliseconds();
       var t = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-      txt.innerText = t;
+      cl.innerText = t;
       ms.innerText = (d - d % 100) / 100;
     }, 100)
+
+
+    function playAudio(src) {
+      var audioElement = new Audio(src);
+      return audioElement;
+    }
+
+    const assets = JSON.parse(document.getElementById('list').textContent);
+
+    // play audio
+    let index = 0;
+    const audioElement = playAudio('assets/' + assets[index]);
+    audioElement.addEventListener('ended', e => {
+      index++
+      if (index < assets.length) {
+        audioElement.src = 'assets/' + assets[index];
+        audioElement.play();
+      }
+    });
 
     document.addEventListener(
       "keydown",
@@ -59,6 +80,12 @@ Copyright (c) 2026 dant02.
           case 51: // 3 on remote
             body.style['background-color'] = '#008';
             body.style['color'] = 'white';
+            break;
+          case 415: // play on remote
+            audioElement.play();
+            break;
+          case 19: // pause on remote
+            audioElement.pause();
             break;
         }
       },
