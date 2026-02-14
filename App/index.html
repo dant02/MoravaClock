@@ -32,7 +32,7 @@ Copyright (c) 2026 dant02.
 
   <script src="webOSTVjs-1.2.10/webOSTV.js" charset="utf-8"></script>
   <script src="webOSTVjs-1.2.10/webOSTV-dev.js" charset="utf-8"></script>
-  <script type="text/javascript" id="list"></script>
+  <script type="text/javascript" id="list">[]</script>
   <script type="text/javascript">
     // https://webos-devrel.github.io/webOS.js/
     const cl = document.getElementById('clock');
@@ -55,14 +55,16 @@ Copyright (c) 2026 dant02.
 
     // play audio
     let index = 0;
-    const audioElement = playAudio('assets/' + assets[index]);
-    audioElement.addEventListener('ended', e => {
+    function endPlay(e) {
       index++
-      if (index < assets.length) {
-        audioElement.src = 'assets/' + assets[index];
-        audioElement.play();
-      }
-    });
+      if (index >= assets.length)
+        index = 0;
+
+      audioElement.src = 'assets/' + assets[index];
+      audioElement.play();
+    }
+    const audioElement = playAudio('assets/' + assets[index]);
+    audioElement.addEventListener('ended', endPlay);
 
     document.addEventListener(
       "keydown",
@@ -81,8 +83,16 @@ Copyright (c) 2026 dant02.
             body.style['background-color'] = '#008';
             body.style['color'] = 'white';
             break;
+          case 412: // << on remote
+            index = -1;
+            endPlay();
+            break;
           case 415: // play on remote
             audioElement.play();
+            break;
+          case 417: // >> on remote
+            index++
+            endPlay();
             break;
           case 19: // pause on remote
             audioElement.pause();
