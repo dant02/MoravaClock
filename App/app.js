@@ -1,10 +1,28 @@
 // https://webos-devrel.github.io/webOS.js/
 const assets = window.playlist || [];
+const REMOTE_KEYS = {
+  themeLight: 49,
+  themeDark: 50,
+  themeBlue: 51,
+  rewind: 412,
+  play: 415,
+  fastForward: 417,
+  pause: 19
+};
 
 const cl = document.getElementById("clock");
 const ms = document.getElementById("milliseconds");
+const body = document.body;
+var index = 0;
+const audioElement = createAudio("assets/" + assets[index]);
 
-setInterval(function () {
+audioElement.addEventListener("ended", playNextTrack);
+
+setInterval(updateClock, 100);
+
+document.addEventListener("keydown", handleRemoteKeyDown, false);
+
+function updateClock() {
   var date = new Date();
   var d = date.getMilliseconds();
   var t = date.toLocaleTimeString([], {
@@ -15,62 +33,98 @@ setInterval(function () {
 
   cl.innerText = t;
   ms.innerText = (d - (d % 100)) / 100;
-}, 100);
+}
 
-function playAudio(src) {
+function createAudio(src) {
   var audioElement = new Audio(src);
   return audioElement;
 }
 
-var index = 0;
+function getAssetPath(trackIndex) {
+  return "assets/" + assets[trackIndex];
+}
 
-function endPlay() {
+function setTrack(trackIndex) {
+  audioElement.src = getAssetPath(trackIndex);
+}
+
+function playCurrentTrack() {
+  audioElement.play();
+}
+
+function pauseCurrentTrack() {
+  audioElement.pause();
+}
+
+function playNextTrack() {
+  if (!assets.length) {
+    return;
+  }
+
   index++;
 
   if (index >= assets.length) {
     index = 0;
   }
 
-  audioElement.src = "assets/" + assets[index];
-  audioElement.play();
+  setTrack(index);
+  playCurrentTrack();
 }
 
-const audioElement = playAudio("assets/" + assets[index]);
-audioElement.addEventListener("ended", endPlay);
+function playPreviousTrack() {
+  if (!assets.length) {
+    return;
+  }
 
-document.addEventListener(
-  "keydown",
-  function (event) {
-    var body = document.getElementsByTagName("body")[0];
+  index--;
 
-    switch (event.keyCode) {
-      case 49: // 1 on remote
-        body.style["background-color"] = "white";
-        body.style.color = "black";
-        break;
-      case 50: // 2 on remote
-        body.style["background-color"] = "black";
-        body.style.color = "white";
-        break;
-      case 51: // 3 on remote
-        body.style["background-color"] = "#008";
-        body.style.color = "white";
-        break;
-      case 412: // << on remote
-        index = -1;
-        endPlay();
-        break;
-      case 415: // play on remote
-        audioElement.play();
-        break;
-      case 417: // >> on remote
-        index++;
-        endPlay();
-        break;
-      case 19: // pause on remote
-        audioElement.pause();
-        break;
-    }
-  },
-  false
-);
+  if (index < 0) {
+    index = assets.length - 1;
+  }
+
+  setTrack(index);
+  playCurrentTrack();
+}
+
+function applyTheme(backgroundColor, textColor) {
+  body.style.backgroundColor = backgroundColor;
+  body.style.color = textColor;
+}
+
+function setLightTheme() {
+  applyTheme("white", "black");
+}
+
+function setDarkTheme() {
+  applyTheme("black", "white");
+}
+
+function setBlueTheme() {
+  applyTheme("#008", "white");
+}
+
+function handleRemoteKeyDown(event) {
+  switch (event.keyCode) {
+    case REMOTE_KEYS.themeLight:
+      setLightTheme();
+      break;
+    case REMOTE_KEYS.themeDark:
+      setDarkTheme();
+      break;
+    case REMOTE_KEYS.themeBlue:
+      setBlueTheme();
+      break;
+    case REMOTE_KEYS.rewind:
+      playPreviousTrack();
+      break;
+    case REMOTE_KEYS.play:
+      playCurrentTrack();
+      break;
+    case REMOTE_KEYS.fastForward:
+      playNextTrack();
+      break;
+    case REMOTE_KEYS.pause:
+      pauseCurrentTrack();
+      break;
+  }
+}
