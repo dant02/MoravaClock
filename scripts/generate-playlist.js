@@ -33,6 +33,7 @@ function getPlaylistEntries() {
 
 function writePlaylistFile(entries) {
   const content =
+    "window.playlistLoaded = true;\n" +
     "window.playlist = " +
     JSON.stringify(entries, null, 2) +
     ";\n";

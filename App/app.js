@@ -1,5 +1,6 @@
 // https://webos-devrel.github.io/webOS.js/
 const assets = window.playlist || [];
+const isPlaylistFileLoaded = window.playlistLoaded === true;
 const REMOTE_KEYS = {
   zero: 48,
   themeLight: 49,
@@ -16,6 +17,7 @@ const REMOTE_KEYS = {
 const cl = document.getElementById("clock");
 const ms = document.getElementById("milliseconds");
 const currentTrack = document.getElementById("current-track");
+const sidebarAlert = document.getElementById("sidebar-alert");
 const body = document.body;
 var index = 0;
 const audioElement = createAudio("assets/" + assets[index]);
@@ -122,6 +124,17 @@ function toggleSidebar() {
   document.getElementById("sidebar").setAttribute("aria-hidden", (!isOpen).toString());
 }
 
+function updateSidebarAlert() {
+  if (!isPlaylistFileLoaded) {
+    sidebarAlert.innerText = "Alert: playlist.generated.js is missing. Run the playlist generator before launching the app.";
+    sidebarAlert.hidden = false;
+    return;
+  }
+
+  sidebarAlert.hidden = true;
+}
+
+updateSidebarAlert();
 updateCurrentTrackDisplay();
 
 function handleRemoteKeyDown(event) {
