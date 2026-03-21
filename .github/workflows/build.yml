@@ -1,0 +1,38 @@
+name: Build webOS Package
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install webOS CLI
+        run: npm install -g @webos-tools/cli
+
+      - name: Create package output directory
+        run: mkdir -p Package
+
+      - name: Build webOS package
+        run: ares-package -o ./Package ./App
+
+      - name: Upload IPK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: moravaclock-ipk
+          path: Package/*.ipk
+          if-no-files-found: error

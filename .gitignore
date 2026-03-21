@@ -420,3 +420,4 @@ FodyWeavers.xsd
 # MoravaClock local media assets
 App/assets/
 tmpAssets/
+Package/
