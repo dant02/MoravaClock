@@ -1,17 +1,21 @@
 // https://webos-devrel.github.io/webOS.js/
 const assets = window.playlist || [];
 const REMOTE_KEYS = {
+  zero: 48,
   themeLight: 49,
   themeDark: 50,
   themeBlue: 51,
+  red: 403,
   rewind: 412,
   play: 415,
   fastForward: 417,
-  pause: 19
+  pause: 19,
+  info: 457
 };
 
 const cl = document.getElementById("clock");
 const ms = document.getElementById("milliseconds");
+const currentTrack = document.getElementById("current-track");
 const body = document.body;
 var index = 0;
 const audioElement = createAudio("assets/" + assets[index]);
@@ -46,6 +50,7 @@ function getAssetPath(trackIndex) {
 
 function setTrack(trackIndex) {
   audioElement.src = getAssetPath(trackIndex);
+  updateCurrentTrackDisplay();
 }
 
 function playCurrentTrack() {
@@ -103,8 +108,29 @@ function setBlueTheme() {
   applyTheme("#008", "white");
 }
 
+function updateCurrentTrackDisplay() {
+  if (!assets.length) {
+    currentTrack.innerText = "No track selected";
+    return;
+  }
+
+  currentTrack.innerText = assets[index];
+}
+
+function toggleSidebar() {
+  var isOpen = body.classList.toggle("sidebar-open");
+  document.getElementById("sidebar").setAttribute("aria-hidden", (!isOpen).toString());
+}
+
+updateCurrentTrackDisplay();
+
 function handleRemoteKeyDown(event) {
   switch (event.keyCode) {
+    case REMOTE_KEYS.red:
+    case REMOTE_KEYS.zero:
+    case REMOTE_KEYS.info:
+      toggleSidebar();
+      break;
     case REMOTE_KEYS.themeLight:
       setLightTheme();
       break;

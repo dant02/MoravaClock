@@ -11,7 +11,26 @@ Copyright (c) 2026 dant02.
 </head>
 
 <body>
-  <div>
+  <aside id="sidebar" class="sidebar" aria-hidden="true">
+    <div class="sidebar__content">
+      <h2 class="sidebar__title">MoravaClock</h2>
+      <div class="sidebar__section">
+        <div class="sidebar__label">Current track</div>
+        <div id="current-track" class="sidebar__value">No track selected</div>
+      </div>
+      <div class="sidebar__section">
+        <div class="sidebar__label">Remote controls</div>
+        <ul class="sidebar__list">
+          <li><span>Red / 0</span><span>Toggle sidebar</span></li>
+          <li><span>1 / 2 / 3</span><span>Change theme</span></li>
+          <li><span>Play / Pause</span><span>Audio control</span></li>
+          <li><span>&lt;&lt; / &gt;&gt;</span><span>Previous or next track</span></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+  <div class="clock-shell">
     <span id="clock">00:00:00</span>.<span id="milliseconds">0</span>
   </div>
 
