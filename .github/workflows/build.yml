@@ -24,6 +24,9 @@ jobs:
       - name: Install webOS CLI
         run: npm install -g @webos-tools/cli
 
+      - name: Generate playlist from assets folder
+        run: node ./scripts/generate-playlist.js
+
       - name: Create package output directory
         run: mkdir -p Package
 

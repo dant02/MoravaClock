@@ -1,3 +1,6 @@
+:: generate playlist from assets folder
+CALL node .\scripts\generate-playlist.js
+
 :: build application located in app folder, output to package folder
 CALL ares-package -o ./package ./app
 

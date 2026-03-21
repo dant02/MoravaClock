@@ -20,7 +20,8 @@ The app is designed for TV use and supports basic remote-control actions for cha
 - `App/index.html` - app markup
 - `App/styles.css` - app styling
 - `App/app.js` - clock, playback, and remote-control logic
-- `App/playlist.js` - playlist definition
+- `App/playlist.generated.js` - generated playlist used at runtime
+- `scripts/generate-playlist.js` - generates the playlist from `App/assets/`
 - `Package/` - packaged `.ipk` output
 - `package-and-deploy.bat` - package, install, and launch script
 - `setup-environment.bat` - CLI setup helper
@@ -78,7 +79,7 @@ The app supports these remote keys:
 - Audio files in `App/assets/` are local project media and are ignored from git.
 - `tmpAssets/` is also ignored from git.
 - `Package/` contains generated output and may be treated as a build artifact.
-- The playlist is defined in `App/playlist.js`.
+- `App/playlist.generated.js` is generated from the contents of `App/assets/`.
 
 ## License
 

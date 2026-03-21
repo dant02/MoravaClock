@@ -421,3 +421,4 @@ FodyWeavers.xsd
 App/assets/
 tmpAssets/
 Package/
+App/playlist.generated.js
