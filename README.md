@@ -1,5 +1,7 @@
 # MoravaClock
 
+[![Build webOS Package](https://github.com/dant02/MoravaClock/actions/workflows/build.yml/badge.svg)](https://github.com/dant02/MoravaClock/actions/workflows/build.yml)
+
 MoravaClock is a simple webOS TV web application that displays a large full-screen digital clock and can play a local playlist of bundled audio tracks.
 
 The app is designed for TV use and supports basic remote-control actions for changing the visual theme and controlling audio playback.
