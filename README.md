@@ -11,6 +11,7 @@ The app is designed for TV use and supports basic remote-control actions for cha
 - Full-screen digital clock with seconds and tenths of a second
 - Simple high-contrast TV-friendly layout
 - Local playlist playback from bundled media files
+- Left sidebar with track and remote-control information
 - Remote-control support for playback and theme switching
 - Packaged as a standard webOS web app
 
@@ -66,6 +67,9 @@ This script will:
 
 The app supports these remote keys:
 
+- `Red` - toggle sidebar
+- `0` - fallback sidebar toggle
+- `Info` - fallback sidebar toggle
 - `1` - light theme
 - `2` - dark theme
 - `3` - blue theme
@@ -80,6 +84,8 @@ The app supports these remote keys:
 - `tmpAssets/` is also ignored from git.
 - `Package/` contains generated output and may be treated as a build artifact.
 - `App/playlist.generated.js` is generated from the contents of `App/assets/`.
+- The left sidebar opens on the left side of the screen and takes about one third of the display.
+- If `App/playlist.generated.js` is missing, the sidebar shows an alert telling you to run the playlist generator before launching the app.
 
 ## License
 
