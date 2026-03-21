@@ -1,6 +1,5 @@
 // https://webos-devrel.github.io/webOS.js/
-const assets = [
-];
+const assets = window.playlist || [];
 
 const cl = document.getElementById("clock");
 const ms = document.getElementById("milliseconds");
