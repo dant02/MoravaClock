@@ -80,6 +80,18 @@ body.sidebar-open .sidebar {
   overflow-wrap: anywhere;
 }
 
+.sidebar__status-row {
+  display: flex;
+  font-size: 1.15rem;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.sidebar__status-row span:last-child {
+  font-weight: bold;
+  text-align: right;
+}
+
 .sidebar__list {
   display: flex;
   flex-direction: column;

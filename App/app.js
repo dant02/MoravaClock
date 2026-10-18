@@ -1,6 +1,8 @@
 // https://webos-devrel.github.io/webOS.js/
 const assets = window.playlist || [];
 const isPlaylistFileLoaded = window.playlistLoaded === true;
+const SCREEN_SAVER_CLIENT_NAME = "MoravaClock";
+const SCREEN_SAVER_SERVICE = "luna://com.webos.service.tvpower";
 const REMOTE_KEYS = {
   zero: 48,
   themeLight: 49,
@@ -18,8 +20,11 @@ const cl = document.getElementById("clock");
 const ms = document.getElementById("milliseconds");
 const currentTrack = document.getElementById("current-track");
 const sidebarAlert = document.getElementById("sidebar-alert");
+const powerServiceStatus = document.getElementById("power-service-status");
+const screensaverDeclineCount = document.getElementById("screensaver-decline-count");
 const body = document.body;
 var index = 0;
+var declinedScreenSaverRequests = 0;
 const audioElement = createAudio("assets/" + assets[index]);
 
 audioElement.addEventListener("ended", playNextTrack);
@@ -27,6 +32,8 @@ audioElement.addEventListener("ended", playNextTrack);
 setInterval(updateClock, 100);
 
 document.addEventListener("keydown", handleRemoteKeyDown, false);
+
+registerScreenSaverRequestHandler();
 
 function updateClock() {
   var date = new Date();
@@ -44,6 +51,47 @@ function updateClock() {
 function createAudio(src) {
   var audioElement = new Audio(src);
   return audioElement;
+}
+
+function registerScreenSaverRequestHandler() {
+  if (!window.webOS || !window.webOS.service) {
+    powerServiceStatus.innerText = "Unavailable";
+    return;
+  }
+
+  window.webOS.service.request(SCREEN_SAVER_SERVICE, {
+    method: "power/registerScreenSaverRequest",
+    parameters: {
+      clientName: SCREEN_SAVER_CLIENT_NAME
+    },
+    subscribe: true,
+    onSuccess: function (response) {
+      powerServiceStatus.innerText = "Registered";
+
+      if (response.state !== "Active" || !response.timestamp) {
+        return;
+      }
+
+      window.webOS.service.request(SCREEN_SAVER_SERVICE, {
+        method: "power/responseScreenSaverRequest",
+        parameters: {
+          ack: false,
+          clientName: SCREEN_SAVER_CLIENT_NAME,
+          timestamp: response.timestamp
+        },
+        onSuccess: function () {
+          declinedScreenSaverRequests++;
+          screensaverDeclineCount.innerText = declinedScreenSaverRequests;
+        },
+        onFailure: function () {
+          powerServiceStatus.innerText = "Registered (decline failed)";
+        }
+      });
+    },
+    onFailure: function () {
+      powerServiceStatus.innerText = "Registration failed";
+    }
+  });
 }
 
 function getAssetPath(trackIndex) {

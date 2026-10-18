@@ -13,6 +13,7 @@ The app is designed for TV use and supports basic remote-control actions for cha
 - Local playlist playback from bundled media files
 - Left sidebar with track and remote-control information
 - Remote-control support for playback and theme switching
+- Keeps the clock visible during extended inactivity on the deployed TV
 - Packaged as a standard webOS web app
 
 ## Project Structure
@@ -80,6 +81,11 @@ The app supports these remote keys:
 
 ## Notes
 
+- The app subscribes to the webOS Luna power service's screensaver request and declines
+  it. This avoids taking over the media player or video plane, so clock rendering and
+  music playback continue normally. The endpoint is undocumented and this is a
+  device-specific workaround for the SENCOR SLE32S803B; verify it after TV firmware
+  updates.
 - Audio files in `App/assets/` are local project media and are ignored from git.
 - `tmpAssets/` is also ignored from git.
 - `Package/` contains generated output and may be treated as a build artifact.
